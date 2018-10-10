@@ -10,7 +10,7 @@
       <div class="rc-dropdown-activator__triangle"><b></b></div>
     </a>
     <div v-if="isOpened" class="rc-dropdown__options">
-      <div v-if="isOpened" class="rc-dropdown__search">
+      <div v-if="isOpened && !searchDisabled" class="rc-dropdown__search">
         <input @click.capture.stop=""
         @change="searchChange"
         type="text"
@@ -123,6 +123,12 @@ export default {
         isHtml,
         label,
       };
+    },
+    searchDisabled() {
+      return (
+        this.options.disable_search ||
+        this.items.length < this.options.disable_search_threshold
+      );
     },
     selectedItem() {
       const vm = this;
