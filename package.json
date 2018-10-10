@@ -1,13 +1,18 @@
 {
-  "name": "rc-dropdown",
-  "version": "0.1.0",
+  "name": "@vagrantir/rc-dropdown",
+  "version": "1.0.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vagrantir/rc-dropdown"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-wc": "vue-cli-service build --target=wc --name=rc-dropdown ./src/wc-main.js",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "test:unit-watch": "vue-cli-service test:unit --watch"
   },
   "dependencies": {
     "@vue/web-component-wrapper": "^1.2.0",
@@ -21,6 +26,8 @@
     "@vue/eslint-config-airbnb": "^3.0.4",
     "@vue/test-utils": "^1.0.0-beta.20",
     "chai": "^4.1.2",
+    "jsdom": "^12.2.0",
+    "jsdom-global": "^3.0.2",
     "lint-staged": "^7.2.2",
     "vue-template-compiler": "^2.5.17"
   },

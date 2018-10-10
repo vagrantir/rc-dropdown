@@ -1,33 +1,39 @@
 <template>
-  <div class="rc-dropdown">
-    <div class="rc-dropdown__style-host" v-html="customStyle">
+    <div class="rc-dropdown">
+        <div class="rc-dropdown__style-host" v-html="customStyle">
+        </div>
+        <a @click.capture.stop="activatorClick"
+           :class="{'rc-dropdown__activator--opened': isOpened}"
+           class="rc-dropdown__activator">
+            <span v-if="placeHolder.isHtml" v-html="placeHolder.label" class="rc-dropdown__placeholder"></span>
+            <span v-if="!placeHolder.isHtml" class="rc-dropdown__placeholder">{{placeHolder.label}}</span>
+            <abbr v-if="value!==''"
+                  @click.capture.stop="singleDeselect"
+                  class="single-deselect"></abbr>
+            <div class="rc-dropdown-activator__triangle"><b></b></div>
+        </a>
+        <div v-if="isOpened" class="rc-dropdown__options">
+            <div v-if="isOpened && !searchDisabled" class="rc-dropdown__search">
+                <input @click.capture.stop=""
+                       @change="searchChange"
+                       type="text"
+                       class="rc-dropdown-search__input">
+            </div>
+            <ul @scroll.capture="onItemsScroll" class="rc-dropdown-options__items">
+                <li v-for="item of items"
+                    :key="item.value"
+                    :value="item.value"
+                    @click.capture.stop="selectItem(item)"
+                    class="rc-dropdown-items__item">
+                    <span v-if="item.isHtml"
+                          v-html="item.label"
+                          class="rc-dropdown-option__label"></span>
+                    <span v-if="!item.isHtml"
+                          class="rc-dropdown-option__label">{{item.label}}</span>
+                </li>
+            </ul>
+        </div>
     </div>
-    <a @click.capture.stop="activatorClick"
-    :class="{'rc-dropdown__activator--opened': isOpened}"
-    class="rc-dropdown__activator">
-      <span v-if="placeHolder.isHtml" v-html="placeHolder.label"></span>
-      <span v-if="!placeHolder.isHtml">{{placeHolder.label}}</span>
-      <div class="rc-dropdown-activator__triangle"><b></b></div>
-    </a>
-    <div v-if="isOpened" class="rc-dropdown__options">
-      <div v-if="isOpened && !searchDisabled" class="rc-dropdown__search">
-        <input @click.capture.stop=""
-        @change="searchChange"
-        type="text"
-        class="rc-dropdown-search__input">
-      </div>
-      <ul @scroll.capture="onItemsScroll" class="rc-dropdown-options__items">
-        <li v-for="item of items"
-        :key="item.value"
-        :value="item.value"
-        @click.capture.stop="selectItem(item)"
-        class="rc-dropdown-items__item">
-        <span v-if="item.isHtml" v-html="item.label" class="rc-dropdown-option__label"></span>
-        <span v-if="!item.isHtml" class="rc-dropdown-option__label">{{item.label}}</span>
-        </li>
-      </ul>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -59,7 +65,7 @@ export default {
           max_selected_options: Infinity,
           no_results_text: 'No results',
           placeholder_text_multiple: 'Select Some Options',
-          placeholder_text_single: 'Select an Option',
+          placeholder_text_single: 'Select an option',
           search_contains: false,
           group_search: true,
           single_backstroke_delete: true,
@@ -116,9 +122,9 @@ export default {
     },
     placeHolder() {
       const isHtml = this.selectedItem ? this.selectedItem.isHtml : false;
-      const label = this.selectedItem
-        ? this.selectedItem.label
-        : this.settings.placeholder_text_single;
+      const label = this.selectedItem ?
+        this.selectedItem.label :
+        this.settings.placeholder_text_single;
       return {
         isHtml,
         label,
@@ -127,25 +133,33 @@ export default {
     searchDisabled() {
       return (
         this.options.disable_search ||
-        this.items.length < this.options.disable_search_threshold
+        (
+          this.items.length < this.options.disable_search_threshold
+        )
       );
     },
     selectedItem() {
       const vm = this;
-      return this.items.find(v => (v.value === vm.value ? v : [][0]));
+      return this.items.find(v => (
+        v.value === vm.value ? v : [][0]
+      ));
     },
     customStyle() {
       return `
-      <style>
-        .rc-dropdown__options {
-          
-        }
-      </style>
-      `;
+  <style>
+    .rc-dropdown__options {
+
+    }
+  </style>
+  `;
     },
   },
   methods: {
     activatorClick(event) {
+      console.trace(['activatorClick', event]);
+      if (event.target.tagName === 'ABBR' && event.target.classList.contains('single-deselect')) {
+        return this.singleDeselect(event);
+      }
       this.isOpened = !this.isOpened;
       return event;
     },
@@ -156,12 +170,15 @@ export default {
       });
       this.$el.dispatchEvent(event);
       this.$emit(eventName, item.value);
-      this.activatorClick();
+      this.isOpened = false;
+    },
+    singleDeselect(event) {
+      console.trace(['singleDeselect', event]);
+      this.selectItem({ value: '' });
     },
     searchChange() {},
     onItemsScroll(event) {
       return event;
-      //      console.log(event.target.firstChild.offsetTop);
     },
   },
   watch: {
@@ -201,170 +218,181 @@ export class RcDropdownItem {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@roboto: 'Roboto', 'Arial', 'Helvetica', 'Nimbus Sans L', sans-serif;
-@ubuntu: 'Ubuntu', 'Tahoma', 'Verdana', 'Segoe', sans-serif;
-@times: 'Times New Roman', 'Times', 'Baskerville', 'Georgia', serif;
-@opensans: 'Open Sans', sans-serif;
+    @roboto: 'Roboto', 'Arial', 'Helvetica', 'Nimbus Sans L', sans-serif;
+    @ubuntu: 'Ubuntu', 'Tahoma', 'Verdana', 'Segoe', sans-serif;
+    @times: 'Times New Roman', 'Times', 'Baskerville', 'Georgia', serif;
+    @opensans: 'Open Sans', sans-serif;
 
-@hover: 0.2s ease;
-@move: 0.3s ease-in-out;
+    @hover: 0.2s ease;
+    @move: 0.3s ease-in-out;
 
-@rc-red: #f26051;
-@rc-blue: #474866;
-@rc-green: #4fad4f;
-@rc-black: #515569;
-@rc-lightblue: #eff2fc;
-@rc-border: #b6b6bf;
-@input-border: 1px solid #d3d7e3;
-@text: #646680;
-@link: #4a85f0;
-@linkhover: fade(@link, 75%);
-@header-color: #c3c5db;
-@header-bgcolor: @rc-blue;
-@header: #2e2e2e;
-@headerhover: fade(@header, 75%);
-@border: @rc-border;
-@icon-png: '~../assets/rc-dropdown-icons.png';
+    @rc-red: #f26051;
+    @rc-blue: #474866;
+    @rc-green: #4fad4f;
+    @rc-black: #515569;
+    @rc-lightblue: #eff2fc;
+    @rc-border: #b6b6bf;
+    @input-border: 1px solid #d3d7e3;
+    @text: #646680;
+    @link: #4a85f0;
+    @linkhover: fade(@link, 75%);
+    @header-color: #c3c5db;
+    @header-bgcolor: @rc-blue;
+    @header: #2e2e2e;
+    @headerhover: fade(@header, 75%);
+    @border: @rc-border;
+    @icon-png: '~../assets/rc-dropdown-icons.png';
 
-.rc-dropdown,
-.rc-dropdown__options,
-.rc-dropdown__search,
-.rc-dropdown-search__input {
-}
-.rc-dropdown {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 13px;
-  user-select: none;
-  text-align: initial;
-  & * {
-    box-sizing: border-box;
-  }
-  & .rc-dropdown__activator {
-    border: 1px @rc-border solid;
-    border-radius: 3px;
-    padding: 3px 5px;
-    height: 36px;
-    cursor: pointer;
-    position: relative;
-    display: block;
-    overflow: hidden;
-    padding: 0 0 0 8px;
-    height: 32px;
-    text-decoration: none;
-    white-space: nowrap;
-    line-height: 24px;
-    span {
-      color: @text;
-      display: block;
-      overflow: hidden;
-      margin-right: 26px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      line-height: 30px;
-    }
-    .rc-dropdown-activator__triangle {
-      position: absolute;
-      top: 0;
-      right: 0;
-      display: block;
-      width: 18px;
-      height: 100%;
-      b {
-        display: block;
-        width: 100%;
-        height: 100%;
-        background: url(@icon-png) no-repeat 0px 6px;
-      }
-    }
-    &.rc-dropdown__activator--opened {
-      span {
-        color: fade(@text, 50%);
-      }
-      .rc-dropdown-activator__triangle {
-        b {
-          background-position-x: -18px;
-          background-position-y: 6px;
-        }
-      }
-    }
-  }
-}
-
-.rc-dropdown__options {
-  position: absolute;
-  top: 100%;
-  z-index: 1010;
-  width: 100%;
-  border: 1px @rc-border solid;
-  border-top: 0;
-  background: #fff;
-  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
-  margin-top: -2px;
-  .rc-dropdown__search {
-    position: relative;
-    left: 0px;
-    top: 0px;
-    width: 90%;
+    .rc-dropdown,
+    .rc-dropdown__options,
+    .rc-dropdown__search,
     .rc-dropdown-search__input {
-      border: @input-border;
-      margin: 1px 0;
-      padding: 4px 20px 4px 5px;
-      width: 100%;
-      height: auto;
-      outline: 0;
-      background: url(@icon-png) no-repeat 100% -20px;
-      font-size: 1em;
-      font-family: sans-serif;
-      line-height: normal;
-      border-radius: 0;
-    }
-  }
-  .rc-dropdown-options__items {
-    color: @text;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
-    margin: 0 4px 4px 0;
-    padding: 0 0 0 4px;
-    max-height: 240px;
-    /* width */
-    &::-webkit-scrollbar {
-      width: 6px;
     }
 
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: @rc-lightblue;
-      border-radius: 4px;
+    .rc-dropdown {
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 13px;
+        user-select: none;
+        text-align: initial;
+        & * {
+            box-sizing: border-box;
+        }
+        & .rc-dropdown__activator {
+            border: 1px @rc-border solid;
+            border-radius: 3px;
+            padding: 3px 5px;
+            height: 36px;
+            cursor: pointer;
+            position: relative;
+            display: block;
+            overflow: hidden;
+            padding: 0 0 0 8px;
+            height: 32px;
+            text-decoration: none;
+            white-space: nowrap;
+            line-height: 24px;
+            span {
+                color: @text;
+                display: block;
+                overflow: hidden;
+                margin-right: 26px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                line-height: 30px;
+            }
+            abbr.single-deselect {
+                position: absolute;
+                top: 9px;
+                right: 22px;
+                display: block;
+                width: 12px;
+                height: 12px;
+                background: url(@icon-png) -42px 1px no-repeat;
+                font-size: 1px;
+            }
+            .rc-dropdown-activator__triangle {
+                position: absolute;
+                top: 0;
+                right: 0;
+                display: block;
+                width: 18px;
+                height: 100%;
+                b {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    background: url(@icon-png) no-repeat 0px 6px;
+                }
+            }
+            &.rc-dropdown__activator--opened {
+                span {
+                    color: fade(@text, 50%);
+                }
+                .rc-dropdown-activator__triangle {
+                    b {
+                        background-position-x: -18px;
+                        background-position-y: 6px;
+                    }
+                }
+            }
+        }
     }
 
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      background: @rc-red;
-      border-radius: 4px;
+    .rc-dropdown__options {
+        position: absolute;
+        top: 100%;
+        z-index: 1010;
+        width: 100%;
+        border: 1px @rc-border solid;
+        border-top: 0;
+        background: #fff;
+        box-shadow: 0 4px 5px rgba(0, 0, 0, 0.15);
+        margin-top: -2px;
+        .rc-dropdown__search {
+            position: relative;
+            left: 0px;
+            top: 0px;
+            width: 90%;
+            .rc-dropdown-search__input {
+                border: @input-border;
+                margin: 1px 0;
+                padding: 4px 20px 4px 5px;
+                width: 100%;
+                height: auto;
+                outline: 0;
+                background: url(@icon-png) no-repeat 100% -20px;
+                font-size: 1em;
+                font-family: sans-serif;
+                line-height: normal;
+                border-radius: 0;
+            }
+        }
+        .rc-dropdown-options__items {
+            color: @text;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0 4px 4px 0;
+            padding: 0 0 0 4px;
+            max-height: 240px;
+            /* width */
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            /* Track */
+            &::-webkit-scrollbar-track {
+                background: @rc-lightblue;
+                border-radius: 4px;
+            }
+
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                background: @rc-red;
+                border-radius: 4px;
+            }
+
+            /* Handle on hover */
+            &::-webkit-scrollbar-thumb:hover {
+                background: fade(@rc-red, 75%);
+            }
+            .rc-dropdown-items__item {
+                margin: 0;
+                padding: 5px 6px;
+                list-style: none;
+                line-height: 15px;
+                word-wrap: break-word;
+                &:hover {
+                    background-color: @rc-blue;
+                    color: #fff;
+                }
+            }
+        }
     }
 
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background: fade(@rc-red, 75%);
+    .rc-dropdown__search {
+        padding: 5px;
     }
-    .rc-dropdown-items__item {
-      margin: 0;
-      padding: 5px 6px;
-      list-style: none;
-      line-height: 15px;
-      word-wrap: break-word;
-      &:hover {
-        background-color: @rc-blue;
-        color: #fff;
-      }
-    }
-  }
-}
-
-.rc-dropdown__search {
-  padding: 5px;
-}
 </style>
