@@ -9,6 +9,3 @@ try {
   window.console.trace(err.message);
 }
 
-export default RcDropdown;
-
-export const RcDropdownItem = RcDropdownItemSrc;

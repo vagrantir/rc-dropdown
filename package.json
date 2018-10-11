@@ -23,7 +23,7 @@
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:unit-watch": "vue-cli-service test:unit --watch",
-        "publish": "npm run build:all && npm publish"
+        "publish": "npm run build:all && npm publish --access=public"
     },
     "unpkg": "dist/rc-dropdown.min.js",
     "style": "lib/RcDropdown.css",
