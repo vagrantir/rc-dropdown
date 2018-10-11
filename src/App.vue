@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!--<img alt="Vue logo" src="./assets/logo.png">-->
-    <RcDropdown :items="items" v-model="selectedItem" style="width: 150px"/>
+    <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
         new RcDropdownItem(3, 'test4'),
         new RcDropdownItem(4, 'test5'),
         new RcDropdownItem(5, 'test6'),
-        new RcDropdownItem(6, 'test7'),
+        new RcDropdownItem(6, 'search7'),
         new RcDropdownItem(7, 'test8'),
         new RcDropdownItem(8, 'test9'),
         new RcDropdownItem(10, 'test11'),

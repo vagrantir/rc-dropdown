@@ -7,20 +7,22 @@
            class="rc-dropdown__activator">
             <span v-if="placeHolder.isHtml" v-html="placeHolder.label" class="rc-dropdown__placeholder"></span>
             <span v-if="!placeHolder.isHtml" class="rc-dropdown__placeholder">{{placeHolder.label}}</span>
-            <abbr v-if="value!==''"
+            <abbr v-if="!singleDeselectDisabled"
                   @click.capture.stop="singleDeselect"
                   class="single-deselect"></abbr>
             <div class="rc-dropdown-activator__triangle"><b></b></div>
         </a>
         <div v-if="isOpened" class="rc-dropdown__options">
             <div v-if="isOpened && !searchDisabled" class="rc-dropdown__search">
+                <!--@change="searchChange"-->
                 <input @click.capture.stop=""
-                       @change="searchChange"
+                       :value="searchText"
+                       @input="searchInput"
                        type="text"
                        class="rc-dropdown-search__input">
             </div>
             <ul @scroll.capture="onItemsScroll" class="rc-dropdown-options__items">
-                <li v-for="item of items"
+                <li v-for="item of filteredItems"
                     :key="item.value"
                     :value="item.value"
                     @click.capture.stop="selectItem(item)"
@@ -30,6 +32,9 @@
                           class="rc-dropdown-option__label"></span>
                     <span v-if="!item.isHtml"
                           class="rc-dropdown-option__label">{{item.label}}</span>
+                </li>
+                <li v-if="filteredItems.length === 0">
+                    <center>{{noItemsText}}</center>
                 </li>
             </ul>
         </div>
@@ -46,6 +51,7 @@ export default {
   props: {
     value: {
       type: [String, Number, Array],
+      default: '',
     },
     items: {
       type: [Array],
@@ -53,7 +59,7 @@ export default {
         return [];
       },
     },
-    options: {
+    'data-options': {
       type: Object,
       default() {
         return {
@@ -91,6 +97,7 @@ export default {
   data() {
     return {
       isOpened: false,
+      searchText: '',
     };
   },
   computed: {
@@ -117,7 +124,7 @@ export default {
           case_sensitive_search: false,
           hide_results_on_select: true,
         },
-        this.options,
+        this.dataOptions,
       );
     },
     placeHolder() {
@@ -130,12 +137,26 @@ export default {
         label,
       };
     },
+    noItemsText() {
+      return this.settings.no_results_text;
+    },
+    isNoItems() {
+      return this.filteredItems.length === 0;
+    },
+    isEmptyValue() {
+      return this.value === '';
+    },
+    singleDeselectDisabled() {
+      return this.isNoItems || this.isEmptyValue;
+    },
+    isSearchDisableByThreshold() {
+      return this.items.length < this.settings.disable_search_threshold;
+    },
     searchDisabled() {
       return (
-        this.options.disable_search ||
-        (
-          this.items.length < this.options.disable_search_threshold
-        )
+        this.isNoItems ||
+        this.settings.disable_search ||
+        this.isSearchDisableByThreshold
       );
     },
     selectedItem() {
@@ -143,6 +164,15 @@ export default {
       return this.items.find(v => (
         v.value === vm.value ? v : [][0]
       ));
+    },
+    filteredItems() {
+      const searchText = this.searchText;
+
+      function filter(item) {
+        return !!item.label.match(new RegExp('^(.*?)' + searchText + '(.*?)$', 'gi'));
+      }
+
+      return !this.searchText ? this.items : this.items.filter(i => filter(i));
     },
     customStyle() {
       return `
@@ -156,7 +186,7 @@ export default {
   },
   methods: {
     activatorClick(event) {
-      console.trace(['activatorClick', event]);
+      // console.trace(['activatorClick', event]);
       if (event.target.tagName === 'ABBR' && event.target.classList.contains('single-deselect')) {
         return this.singleDeselect(event);
       }
@@ -173,10 +203,15 @@ export default {
       this.isOpened = false;
     },
     singleDeselect(event) {
-      console.trace(['singleDeselect', event]);
+      // console.trace(['singleDeselect', event]);
       this.selectItem({ value: '' });
     },
-    searchChange() {},
+    searchChange({ target }) {
+      this.searchText = target.value;
+    },
+    searchInput({ target }) {
+      this.searchText = target.value;
+    },
     onItemsScroll(event) {
       return event;
     },
@@ -189,6 +224,11 @@ export default {
       });
       this.$el.dispatchEvent(event);
       this.$emit(eventName, this.isOpened);
+    },
+    filteredItems(newVal, oldValu) {
+      if (newVal.length === 0) {
+        this.selectItem({ value: '', label: this.noItemsText });
+      }
     },
   },
   mounted() {
