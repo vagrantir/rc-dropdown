@@ -1,6 +1,6 @@
 {
     "name": "@vagrantir/rc-dropdown",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "private": false,
     "main": "esm/RcDropdown.esm.js",
     "module": "esm/RcDropdown.esm.js",
