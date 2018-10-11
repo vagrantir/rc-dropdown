@@ -2,7 +2,7 @@
     "name": "@vagrantir/rc-dropdown",
     "version": "1.0.1",
     "private": false,
-    "main": "lib/RcDropdown.common.js",
+    "main": "esm/RcDropdown.esm.js",
     "browser": "dist/rc-dropdown.min.js",
     "module": "esm/RcDropdown.esm.js",
     "license": "MIT",
@@ -26,7 +26,6 @@
         "publish": "npm run build:all && npm publish --access=public"
     },
     "unpkg": "dist/rc-dropdown.min.js",
-    "style": "lib/RcDropdown.css",
     "dependencies": {
         "@vue/web-component-wrapper": "^1.2.0",
         "vue": "^2.5.17"

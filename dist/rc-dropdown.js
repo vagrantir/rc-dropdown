@@ -1486,16 +1486,14 @@ component.options.__file = "RcDropdown.vue"
 
 
 
-var CustomElement = vue_wc_wrapper(external_Vue_default.a, RcDropdown);
 
 try {
-  window.customElements.define('rc-dropdown', CustomElement);
+  window.customElements.define('rc-dropdown', vue_wc_wrapper(external_Vue_default.a, RcDropdown));
 } catch (err) {
   window.console.trace(err.message);
 }
 
 /* harmony default export */ var wc_mainshadow = (RcDropdown);
-var wc_mainshadow_RcDropdownItem = RcDropdownvue_type_script_lang_js_RcDropdownItem;
 // CONCATENATED MODULE: ./node_modules/@vue/cli-service/lib/commands/build/entry-wc.js
 
 
