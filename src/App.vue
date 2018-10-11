@@ -1,12 +1,13 @@
 <template>
-  <div id="app">
-    <!--<img alt="Vue logo" src="./assets/logo.png">-->
-    <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
-  </div>
+    <div id="app">
+        <!--<img alt="Vue logo" src="./assets/logo.png">-->
+        <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
+    </div>
 </template>
 
 <script>
-import RcDropdown, { RcDropdownItem } from './components/RcDropdown.vue';
+import RcDropdown, {RcDropdownItem} from './components/RcDropdown.vue';
+// import RcDropdown, {RcDropdownItem} from '../esm/RcDropdown.esm';
 
 export default {
   name: 'app',
@@ -42,12 +43,12 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    #app {
+        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+    }
 </style>

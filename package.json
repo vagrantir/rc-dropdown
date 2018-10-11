@@ -1,8 +1,10 @@
 {
     "name": "@vagrantir/rc-dropdown",
     "version": "1.0.0",
-    "private": true,
-    "main": "dist/rc-dropdown.min.js",
+    "private": false,
+    "main": "lib/RcDropdown.common.js",
+    "browser": "dist/rc-dropdown.min.js",
+    "module": "esm/RcDropdown.esm.js",
     "license": "MIT",
     "keywords": [
         "vue",
@@ -14,15 +16,17 @@
         "url": "https://github.com/vagrantir/rc-dropdown"
     },
     "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "build-wc": "vue-cli-service build --target=wc --name=rc-dropdown ./src/wc-main.js",
+        "serve": "vue-cli-service serve ./src/demo.js",
+        "build": "vue-cli-service build --target=lib --dest=lib --name=RcDropdown ./src/components/RcDropdown.vue",
+        "build:wc": "vue-cli-service build --target=wc --dest=dist --name=rc-dropdown ./src/wc-main.js",
+        "build:all": "npm run test:unit && npm run build && npm run build:wc",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:unit-watch": "vue-cli-service test:unit --watch",
-        "publish": "vue-cli-service test:unit && vue-cli-service build --target=wc --name=rc-dropdown ./src/wc-main.js && npm publish"
+        "publish": "npm run build:all && npm publish"
     },
     "unpkg": "dist/rc-dropdown.min.js",
+    "style": "lib/RcDropdown.css",
     "dependencies": {
         "@vue/web-component-wrapper": "^1.2.0",
         "vue": "^2.5.17"
