@@ -20,7 +20,7 @@
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:unit-watch": "vue-cli-service test:unit --watch",
-        "publish": "vue-cli-service test:unit && vue-cli-service build --target=wc --name=rc-dropdown ./src/wc-main.js"
+        "publish": "vue-cli-service test:unit && vue-cli-service build --target=wc --name=rc-dropdown ./src/wc-main.js && npm publish"
     },
     "unpkg": "dist/rc-dropdown.min.js",
     "dependencies": {
