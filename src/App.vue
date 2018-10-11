@@ -7,7 +7,7 @@
 
 <script>
 import RcDropdown, {RcDropdownItem} from './components/RcDropdown.vue';
-// import RcDropdown, {RcDropdownItem} from '../esm/RcDropdown.esm';
+// import RcDropdown, {RcDropdownItem} from '@vagrantir/rc-dropdown';
 
 export default {
   name: 'app',

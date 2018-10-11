@@ -1,6 +1,8 @@
 <template>
     <div class="rc-dropdown">
-        <div class="rc-dropdown__style-host" v-html="customStyle">
+        <div class="rc-dropdown__style-host">
+            <custom-styles>
+            </custom-styles>
         </div>
         <a @click.capture.stop="activatorClick"
            :class="{'rc-dropdown__activator--opened': isOpened}"
@@ -43,6 +45,8 @@
 </template>
 
 <script>
+import CustomStyles from './CustomStyles';
+
 export default {
   name: 'RcDropdown',
   model: {
@@ -95,8 +99,9 @@ export default {
       default: false,
     },
   },
-
-
+  components: {
+    'custom-styles': CustomStyles,
+  },
   data() {
     return {
       isOpened: false,
@@ -177,12 +182,6 @@ export default {
 
       return !this.searchText ? this.items : this.items.filter(i => filter(i));
     },
-    customStyle() {
-      return `
-  <style>
-  </style>
-  `;
-    },
   },
   methods: {
     activatorClick(event) {
@@ -257,7 +256,7 @@ export class RcDropdownItem {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
+<style lang="less">
     @roboto: 'Roboto', 'Arial', 'Helvetica', 'Nimbus Sans L', sans-serif;
     @ubuntu: 'Ubuntu', 'Tahoma', 'Verdana', 'Segoe', sans-serif;
     @times: 'Times New Roman', 'Times', 'Baskerville', 'Georgia', serif;

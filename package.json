@@ -3,7 +3,6 @@
     "version": "1.0.2",
     "private": false,
     "main": "esm/RcDropdown.esm.js",
-    "browser": "dist/rc-dropdown.min.js",
     "module": "esm/RcDropdown.esm.js",
     "license": "MIT",
     "keywords": [
@@ -23,9 +22,8 @@
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
         "test:unit-watch": "vue-cli-service test:unit --watch",
-        "publish": "npm run build:all && npm publish --access=public"
+        "pub": "npm run build:all && npm publish --access=public"
     },
-    "unpkg": "dist/rc-dropdown.min.js",
     "dependencies": {
         "@vue/web-component-wrapper": "^1.2.0",
         "vue": "^2.5.17"
@@ -38,6 +36,7 @@
         "@vue/eslint-config-airbnb": "^3.0.4",
         "@vue/test-utils": "^1.0.0-beta.20",
         "chai": "^4.1.2",
+        "extract-text-webpack-plugin": "^3.0.2",
         "jsdom": "^12.2.0",
         "jsdom-global": "^3.0.2",
         "lint-staged": "^7.2.2",
