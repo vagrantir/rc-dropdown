@@ -19,6 +19,7 @@
                        :value="searchText"
                        @input="searchInput"
                        type="text"
+                       title=""
                        class="rc-dropdown-search__input">
             </div>
             <ul @scroll.capture="onItemsScroll" class="rc-dropdown-options__items">
@@ -33,8 +34,8 @@
                     <span v-if="!item.isHtml"
                           class="rc-dropdown-option__label">{{item.label}}</span>
                 </li>
-                <li v-if="filteredItems.length === 0">
-                    <center>{{noItemsText}}</center>
+                <li v-if="filteredItems.length === 0" style="text-align: center;">
+                    {{noItemsText}}
                 </li>
             </ul>
         </div>
@@ -94,6 +95,8 @@ export default {
       default: false,
     },
   },
+
+
   data() {
     return {
       isOpened: false,
@@ -177,9 +180,6 @@ export default {
     customStyle() {
       return `
   <style>
-    .rc-dropdown__options {
-
-    }
   </style>
   `;
     },
@@ -202,7 +202,7 @@ export default {
       this.$emit(eventName, item.value);
       this.isOpened = false;
     },
-    singleDeselect(event) {
+    singleDeselect() {
       // console.trace(['singleDeselect', event]);
       this.selectItem({ value: '' });
     },
@@ -225,7 +225,7 @@ export default {
       this.$el.dispatchEvent(event);
       this.$emit(eventName, this.isOpened);
     },
-    filteredItems(newVal, oldValu) {
+    filteredItems(newVal) {
       if (newVal.length === 0) {
         this.selectItem({ value: '', label: this.noItemsText });
       }
@@ -302,8 +302,6 @@ export class RcDropdownItem {
         & .rc-dropdown__activator {
             border: 1px @rc-border solid;
             border-radius: 3px;
-            padding: 3px 5px;
-            height: 36px;
             cursor: pointer;
             position: relative;
             display: block;
@@ -343,7 +341,7 @@ export class RcDropdownItem {
                     display: block;
                     width: 100%;
                     height: 100%;
-                    background: url(@icon-png) no-repeat 0px 6px;
+                    background: url(@icon-png) no-repeat 0 6px;
                 }
             }
             &.rc-dropdown__activator--opened {
@@ -372,8 +370,8 @@ export class RcDropdownItem {
         margin-top: -2px;
         .rc-dropdown__search {
             position: relative;
-            left: 0px;
-            top: 0px;
+            left: 0;
+            top: 0;
             width: 90%;
             .rc-dropdown-search__input {
                 border: @input-border;
