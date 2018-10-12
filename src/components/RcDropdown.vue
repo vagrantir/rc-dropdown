@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import CustomStyles from './CustomStyles';
+import CustomStyles from './CustomStyles.vue';
 
 export default {
   name: 'RcDropdown',
