@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import CustomStyles from './CustomStyles.vue';
+import CustomStyles from '@vagrantir/vue-custom-styles';
 
 export default {
   name: 'RcDropdown',

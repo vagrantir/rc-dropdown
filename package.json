@@ -2,8 +2,7 @@
     "name": "@vagrantir/rc-dropdown",
     "version": "1.1.2",
     "private": false,
-    "main": "./src/components/RcDropdown.vue",
-    "module": "./src/components/RcDropdown.vue",
+    "main": "lib/RcDropdown.common.js",
     "license": "MIT",
     "keywords": [
         "vue",
@@ -17,7 +16,7 @@
     "scripts": {
         "serve": "vue-cli-service serve ./src/demo.js",
         "build": "vue-cli-service build --target=lib --dest=lib --name=RcDropdown ./src/components/RcDropdown.vue",
-        "build:wc": "vue-cli-service build --target=wc --dest=dist --name=rc-dropdown ./src/wc-main.js",
+        "build:wc": "vue-cli-service build --target=wc --dest=dist --name=rc-dropdown ./src/components/RcDropdown.vue",
         "build:all": "npm run test:unit && npm run build && npm run build:wc",
         "lint": "vue-cli-service lint",
         "test:unit": "vue-cli-service test:unit",
@@ -25,7 +24,7 @@
         "pub": "npm run build:all && npm publish --access=public"
     },
     "dependencies": {
-        "@vue/web-component-wrapper": "^1.2.0",
+        "@vagrantir/vue-custom-styles": "^1.0.0",
         "vue": "^2.5.17"
     },
     "devDependencies": {
