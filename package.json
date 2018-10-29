@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "@vagrantir/vue-custom-styles": "^1.0.0",
+        "less": "^3.8.1",
+        "less-loader": "^4.1.0",
         "vue": "^2.5.17"
     },
     "devDependencies": {
