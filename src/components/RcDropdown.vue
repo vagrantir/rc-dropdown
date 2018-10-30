@@ -190,7 +190,7 @@ export default {
   methods: {
     activatorClick(event) {
       // console.trace(['activatorClick', event]);
-      if(this.disabled){
+      if(this.disable){
         return;
       }
 
