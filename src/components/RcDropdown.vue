@@ -68,7 +68,7 @@ export default {
       type: Object,
       default() {
         return {
-          allow_single_deselect: false,
+          allow_single_deselect: true,
           disable_search: true,
           disable_search_threshold: 0,
           enable_split_word_search: false,
@@ -94,6 +94,10 @@ export default {
       type: [String],
       default: '',
     },
+    disable: {
+      type: [Boolean],
+      default: false
+    },
     multiple: {
       type: [String, Boolean],
       default: false,
@@ -112,7 +116,7 @@ export default {
     settings() {
       return Object.assign(
         {
-          allow_single_deselect: false,
+          allow_single_deselect: true,
           disable_search: true,
           disable_search_threshold: 0,
           enable_split_word_search: false,
@@ -155,7 +159,7 @@ export default {
       return this.value === '';
     },
     singleDeselectDisabled() {
-      return this.isNoItems || this.isEmptyValue;
+      return this.isNoItems || this.isEmptyValue || !this.settings.allow_single_deselect || this.disable;
     },
     isSearchDisableByThreshold() {
       return this.items.length < this.settings.disable_search_threshold;
@@ -186,9 +190,14 @@ export default {
   methods: {
     activatorClick(event) {
       // console.trace(['activatorClick', event]);
+      if(this.disable){
+        return;
+      }
+
       if (event.target.tagName === 'ABBR' && event.target.classList.contains('single-deselect')) {
         return this.singleDeselect(event);
       }
+
       this.isOpened = !this.isOpened;
       return event;
     },
