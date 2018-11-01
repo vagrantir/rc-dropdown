@@ -243,7 +243,9 @@ export default {
     const vm = this;
 
     function handleClickOutside(evt) {
-      if (vm.isOpened) {
+//      eval('debugger');
+      let my = Array.from(vm.$el.querySelectorAll(evt.target.tagName.toLowerCase())).find(el=>el === evt.target);
+      if (vm.isOpened && !my) {
         vm.isOpened = !vm.isOpened;
         evt.stopPropagation(true);
       }

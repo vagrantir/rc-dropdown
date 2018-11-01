@@ -1,8 +1,9 @@
 <template>
     <div id="app">
         <!--<img alt="Vue logo" src="./assets/logo.png">-->
-        <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
-        <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
+        <RcDropdown :items="items" v-model="selectedItem1" :data-options="{disable_search: false}" style="width: 150px"/>
+        <span style="width: 50px; text-align: center; margin: 10px">&nbsp;-&nbsp;</span>
+        <RcDropdown :items="items" v-model="selectedItem2" :data-options="{disable_search: false}" style="width: 150px"/>
     </div>
 </template>
 
@@ -16,7 +17,8 @@ export default {
   },
   data() {
     return {
-      selectedItem: 2,
+      selectedItem1: 2,
+      selectedItem2: 2,
       items: [
         new RcDropdownItem(0, 'test1'),
         new RcDropdownItem(1, 'test2'),
