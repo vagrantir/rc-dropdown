@@ -249,9 +249,9 @@ export default {
       }
     }
 
-    window.addEventListener('click', handleClickOutside);
-
-    window.aaa = handleClickOutside;
+    window.addEventListener('click', handleClickOutside, true);
+    //
+    // window.aaa = handleClickOutside;
   },
 };
 

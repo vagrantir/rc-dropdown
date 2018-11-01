@@ -2,6 +2,7 @@
     <div id="app">
         <!--<img alt="Vue logo" src="./assets/logo.png">-->
         <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
+        <RcDropdown :items="items" v-model="selectedItem" :data-options="{disable_search: false}" style="width: 150px"/>
     </div>
 </template>
 
