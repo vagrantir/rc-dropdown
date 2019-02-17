@@ -29,7 +29,9 @@
                     :key="item.value"
                     :value="item.value"
                     @click.capture.stop="selectItem(item)"
-                    class="rc-dropdown-items__item">
+                    class="rc-dropdown-items__item"
+                    :class="{'rc-dropdown-items__item--disabled': !!item.disabled}"
+                >
                     <span v-if="item.isHtml"
                           v-html="item.label"
                           class="rc-dropdown-option__label"></span>
@@ -202,6 +204,9 @@ export default {
       return event;
     },
     selectItem(item) {
+      if (item.disabled){
+        return;
+      }
       const eventName = 'change';
       const event = new CustomEvent(eventName, {
         detail: item.value,
@@ -256,10 +261,11 @@ export default {
 };
 
 export class RcDropdownItem {
-  constructor(value, label, isHtml = false) {
+  constructor(value, label, isHtml = false, disabled = false) {
     this.value = value;
     this.label = label;
     this.isHtml = isHtml;
+    this.disabled = disabled;
   }
 }
 </script>
@@ -433,6 +439,17 @@ export class RcDropdownItem {
                 &:hover {
                     background-color: @rc-blue;
                     color: #fff;
+                    cursor: pointer;
+                }
+                &--disabled{
+                    background-color: #ffffff;
+                    color: @rc-border;
+                    cursor: default;
+                    &:hover {
+                        background-color: #ffffff;
+                        color: @rc-border;
+                        cursor: default;
+                    }
                 }
             }
         }

@@ -18,7 +18,7 @@ export default {
       selectedItem: 2,
       items: [
         new RcDropdownItem(0, 'test1'),
-        new RcDropdownItem(1, 'test2'),
+        new RcDropdownItem(1, 'test2', false, true),
         new RcDropdownItem(2, 'test3'),
         new RcDropdownItem(3, 'test4'),
         new RcDropdownItem(4, 'test5'),
